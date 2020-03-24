@@ -63,7 +63,7 @@ for i in N_ROW:
                 prename = htmltext.find(phrase,postname)
                 postname =  htmltext.find("\"", prename+len(phrase)+1)
                 names[i][j] = htmltext[prename+len(phrase):postname]
-                print i,", ",j, ": ", names[i][j]
+                print (i,", ",j, ": ", names[i][j])
 
 
 print ("IP Adress for SSH:")
