@@ -6,6 +6,8 @@ import urllib
 import os
 import struct
 import numpy
+import requests
+import json
 
 
 
@@ -36,7 +38,10 @@ name = [0,0,0,0,0,0]
 ROAD_BUFFER = 30
 
 
-
+def jprint(obj):
+# create a formatted string of the Python JSON object
+    text = json.dumps(obj, sort_keys=True, indent=4)
+    return text
 
 for i in range(N_ROW):
         for j in range(N_COL):
@@ -45,13 +50,19 @@ for i in range(N_ROW):
                 grid_x[j] = Long2
                 grid_y[i] = Lat2
                 URL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?radius="+str(Radius)+"&key=AIzaSyA3aYU6UKfZkp8QfafB2WCfouPjxVrFx2A&location="+str(Lat2)+","+str(Long2)
-                html=urllib.urlopen(URL)
-                htmltext=html.read()
+                print (URL)
+                r = requests.get(URL)
+                htmltext = jprint(r.json())
+                #print(htmltext)
                 postname = 1
                 for k in range(2):
-                        phrase =  "\"name\" : \""
+                        phrase =  "\"name\": \""
                         prename = htmltext.find(phrase,postname)
                         postname =  htmltext.find("\"", prename+len(phrase)+1)
                         if k == 1:
                                     names[i][j] = str(htmltext[prename+len(phrase):postname])
-                                    print i,", ",j, ": ", names[i][j]
+                                    print (i,", ",j, ": ", names[i][j])
+
+
+
+
